@@ -100,12 +100,64 @@ catch (BagdockApiException ex)
 }
 ```
 
+## Authentication
+
+The SDK supports three authentication modes: API keys, OAuth access tokens, and OAuth2 client credentials.
+
+### API key
+
+```csharp
+var client = new BagdockClient("sk_live_...");
+```
+
+### OAuth access token
+
+```csharp
+var client = BagdockClient.WithAccessToken("eyJhbGciOiJSUzI1NiIs...");
+```
+
+### Client credentials
+
+```csharp
+var client = BagdockClient.WithClientCredentials(
+    "oac_your_client_id",
+    "bdok_secret_your_secret",
+    new[] { "facilities:read", "contacts:read" }
+);
+```
+
+### OAuth2 helpers
+
+`OAuthHelper` covers PKCE, authorization URLs, code exchange, and device flow—useful alongside Bagdock connect webviews for external integrations (access control, security, and insurance).
+
+```csharp
+using Bagdock.OAuth;
+
+var pkce = OAuthHelper.GeneratePKCE();
+var url = OAuthHelper.BuildAuthorizeUrl("oac_...", "https://your-app.com/callback", pkce.CodeChallenge, "openid contacts:read");
+
+var tokens = await OAuthHelper.ExchangeCodeAsync("oac_...", code, redirectUri, pkce.CodeVerifier);
+
+var device = await OAuthHelper.DeviceAuthorizeAsync("bagdock-cli", "developer:read");
+Console.WriteLine($"Open {device.VerificationUri} and enter: {device.UserCode}");
+var deviceTokens = await OAuthHelper.PollDeviceTokenAsync("bagdock-cli", device.DeviceCode);
+```
+
 ## Configuration
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `apiKey` | `string` | — | **Required.** Your Bagdock API key |
+| `apiKey` | `string` | — | API key via `new BagdockClient(apiKey, baseUrl?)` |
+| `accessToken` | `string` | — | OAuth bearer token via `BagdockClient.WithAccessToken(accessToken, baseUrl?)` |
+| `clientId` / `clientSecret` / `scopes` | `string` / `string` / `string[]?` | — | Client credentials via `BagdockClient.WithClientCredentials(...)`; optional `issuer` and `baseUrl` |
 | `baseUrl` | `string?` | `https://api.bagdock.com/api/v1` | API base URL |
+
+## Documentation
+
+- [Full documentation](https://bagdock.com/docs)
+- [.NET SDK quickstart](https://bagdock.com/docs/sdks/dotnet)
+- [API reference](https://bagdock.com/docs/api)
+- [OAuth2 / OIDC guide](https://bagdock.com/docs/auth/oauth2)
 
 ## License
 
