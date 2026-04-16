@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Bagdock</RootNamespace>
+    <PackageId>Bagdock</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Bagdock</Authors>
+    <Description>Official Bagdock API client for .NET</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://docs.bagdock.com/sdks/dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bagdock/bagdock-dotnet</RepositoryUrl>
+    <PackageTags>bagdock;sdk;api;self-storage</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
